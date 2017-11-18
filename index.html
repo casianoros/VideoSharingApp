@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Logo Nav - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+<!-- Navigation  -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="navBtnClick">
+                <a href="#">See List</a>
+            </li>
+            <li class="navBtnClick"><a href="#">Page 1</a></li>
+            <li class="navBtnClick"><a href="#">Page 2</a></li>
+            <li class="navBtnClick"><a href="#">Page 3</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 id="myName" class="mt-5" data-idOfData="RandomData" data-NameOfUser="" data-IdOfUser="">Add Car</h1>
+    <p id="myDesc">To the website</p>
+    <br>
+    <div class="col-xs-4">
+        <h5>Car Name</h5>
+        <select class="form-control" id="carName">
+            <option>Alfa Romeo</option>
+            <option>Bmw</option>
+            <option>Mercedes-Benz</option>
+        </select>
+        <h5>Car Power</h5>
+        <input type="text" id="carPower">
+        <h5>Car Transmission</h5>
+        <select class="form-control" id="carTransmission">
+            <option>Manual</option>
+            <option>Automatic</option>
+        </select>
+        <br>
+        <button class="btn btn-primary" type="submit" id="submitCar">Submit Car</button>
+    </div>
+    <br>
+    <br>
+    <div id="populateWithCars" class="col-xs-4">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+
+</html>
+
+<script>
+
+    var carList = []
+    //console.log(carList)
+
+    var getCarsFromLocalStorage = localStorage.getItem("myCars")
+    var convertToArray = JSON.parse(getCarsFromLocalStorage)
+    var arrayOfCars = convertToArray
+
+    //console.log(arrayOfCars)
+
+    populateCars(arrayOfCars)
+    // ---<-<-<-<------<-<-<-<-<------- Action For Submitting Cars -------->->->->->---
+    // ---- - - -- - - - - - -- - - - -                            - - - -- - - - --
+
+    $(document).on("click","#submitCar",function(){
+        //console.log("salut")
+        var carName = $("#carName")
+        var carPower = $("#carPower")
+        var carTransmission = $("#carTransmission")
+        //console.log(carName,carPower,carTransmission)
+        //Working process
+
+        var findCar = carName.find(":selected").val()
+        var findPower = carPower.val()
+        var findTransmission = carTransmission.find(":selected").val()
+        //console.log(findCar,findPower,findTransmission)
+        //Working process
+
+        var carObj = {}
+        if(findPower == ""){
+            //console.log("there is no power")
+            carObj.carName = findCar
+            carObj.carPower = "0"
+            carObj.carTransmission = findTransmission
+            //console.log(carObj)
+            //Working process
+        }else{
+            carObj.carName = findCar
+            carObj.carPower = findPower
+            carObj.carTransmission = findTransmission
+            //console.log(carObj)
+            //Working process
+        }
+        arrayOfCars.push(carObj)
+        //console.log(arrayOfCars)
+
+        var makeItString = JSON.stringify(arrayOfCars)
+        //console.log(makeItString)
+        SaveCarsToLocalStorage(makeItString)
+        PopulateOnAddition()
+
+    })
+
+
+    function SaveCarsToLocalStorage (data) {
+        console.log(data)
+        localStorage.setItem("myCars",data)
+    }
+    function populateCars(data) {
+        //console.log(data)
+        $("#populateWithCars").html(" ")
+
+        for(var i = 0 ; i < data.length ; i++){
+            $("#populateWithCars").append("<ul>\<li>"+ data[i].carName +"</li><li>"+ data[i].carPower +"</li><li>"+ data[i].carTransmission +"</li></ul>")
+        }
+    }
+
+    function PopulateOnAddition() {
+        var tempSArray = localStorage.getItem("myCars")
+        var tempArray = JSON.parse(tempSArray)
+        populateCars(tempArray)
+    }
+
+
+</script>
